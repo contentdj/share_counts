@@ -11,7 +11,7 @@ module ShareCounts
   end
 
   def self.supported_networks
-    %w(reddit digg twitter facebook linkedin stumbleupon googlebuzz)
+    %w(reddit digg twitter facebook_total_count facebook_like_count facebook_comment_count facebook_share_count linkedin stumbleupon googlebuzz)
   end
   
   def self.reddit url, raise_exceptions = false
@@ -39,10 +39,31 @@ module ShareCounts
     }
   end
 
-  def self.facebook url, raise_exceptions = false
+  def self.facebook_total_count url, raise_exceptions = false
     try("facebook", url, raise_exceptions) {
       extract_count from_json("http://api.facebook.com/restserver.php", :v => "1.0", :method => "links.getStats",  
-       :urls => url, :callback => "fb_sharepro_render", :format => "json" ), :selector => "total_count"
+       :urls => url, :format => "json" ), :selector => "total_count"
+    }
+  end
+
+  def self.facebook_like_count url, raise_exceptions = false
+    try("facebook", url, raise_exceptions) {
+      extract_count from_json("http://api.facebook.com/restserver.php", :v => "1.0", :method => "links.getStats",  
+       :urls => url, :format => "json" ), :selector => "like_count"
+    }
+  end
+
+  def self.facebook_comment_count url, raise_exceptions = false
+    try("facebook", url, raise_exceptions) {
+      extract_count from_json("http://api.facebook.com/restserver.php", :v => "1.0", :method => "links.getStats",  
+       :urls => url, :format => "json" ), :selector => "comment_count"
+    }
+  end
+
+  def self.facebook_share_count url, raise_exceptions = false
+    try("facebook", url, raise_exceptions) {
+      extract_count from_json("http://api.facebook.com/restserver.php", :v => "1.0", :method => "links.getStats",  
+       :urls => url, :format => "json" ), :selector => "share_count"
     }
   end
 
