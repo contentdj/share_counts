@@ -40,30 +40,29 @@ module ShareCounts
   end
 
   def self.facebook_total_count url, raise_exceptions = false
-    try("facebook", url, raise_exceptions) {
-      extract_count from_json("http://api.facebook.com/restserver.php", :v => "1.0", :method => "links.getStats",  
-       :urls => url, :format => "json" ), :selector => "total_count"
+    try("facebook_total_count", url, raise_exceptions) {
+      # https://graph.facebook.com/?fields=og_object{likes.limit(0).summary(true)}&id=http://ediblecrafts.craftgossip.com/funfetti-whoopie-pies/2016/09/02/
+      extract_count from_json("https://graph.facebook.com/?fields=og_object{likes.limit(0).summary(true)}&id=#{url}"), :selector => "og_object/likes/summary/total_count"
     }
   end
 
   def self.facebook_like_count url, raise_exceptions = false
-    try("facebook", url, raise_exceptions) {
-      extract_count from_json("http://api.facebook.com/restserver.php", :v => "1.0", :method => "links.getStats",  
-       :urls => url, :format => "json" ), :selector => "like_count"
+    try("facebook_like_count", url, raise_exceptions) {
+      extract_count from_json("https://graph.facebook.com/?fields=og_object{likes.limit(0).summary(true)}&id=#{url}"), :selector => "og_object/likes/summary/total_count"
     }
   end
 
   def self.facebook_comment_count url, raise_exceptions = false
-    try("facebook", url, raise_exceptions) {
-      extract_count from_json("http://api.facebook.com/restserver.php", :v => "1.0", :method => "links.getStats",  
-       :urls => url, :format => "json" ), :selector => "comment_count"
+    try("facebook_comment_count", url, raise_exceptions) {
+      # http://graph.facebook.com/?fields=og_object{comments.limit(0).summary(true)}&id=http://twitter.com
+      extract_count from_json("https://graph.facebook.com/?&id=#{url}"), :selector => "share/comment_count"
     }
   end
 
   def self.facebook_share_count url, raise_exceptions = false
-    try("facebook", url, raise_exceptions) {
-      extract_count from_json("http://api.facebook.com/restserver.php", :v => "1.0", :method => "links.getStats",  
-       :urls => url, :format => "json" ), :selector => "share_count"
+    try("facebook_share_count", url, raise_exceptions) {
+      # http://graph.facebook.com/?id=http://twitter.com
+      extract_count from_json("https://graph.facebook.com/?&id=#{url}"), :selector => "share/share_count"
     }
   end
 
