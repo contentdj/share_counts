@@ -58,7 +58,7 @@ module ShareCounts
       params   = args.inject({}) { |r, c| r.merge! c }
 
       begin
-        response    = RestClient.get url,  { :params => params, :timeout => 5 }
+        response    = RestClient.get url,  { :params => params, :timeout => 5, :user_agent => "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2" }
 
         # if a callback is specified, the expected response is in the format "callback_name(JSON data)";
         # with the response ending with ";" and, in some cases, "\n"
